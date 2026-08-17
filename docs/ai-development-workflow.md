@@ -72,7 +72,7 @@ detector, the spec, and the snapshot diff tooling already exist and compose.
 |---|---|---|---|---|
 | `canton-extractor` | Reverse-engineer a calculator (bundle or site) into evidence + draft spec | source bundles, live site (read-only fetch) | `extraction_reference/<canton>/`, draft `SPEC.md`, vendor fixtures | touch any app/package code |
 | `canton-implementer` | Turn an approved spec into flow + compute + schema + tests; iterate to green | SPEC.md, fixtures, engine-core docs | `packages/canton-xx/src/`, tests | edit SPEC.md, fixtures, engine-core, other packages |
-| `verifier` | Adversarial audit with fresh context: re-read spec, hunt uncovered branches, propose extra edge fixtures, check snapshot coverage | SPEC.md + implementation (never the implementer's conversation) | verification report, *proposed* fixtures (human promotes them) | modify implementation |
+| `canton-verifier` | Adversarial audit with fresh context: re-read spec, hunt uncovered branches, propose extra edge fixtures, check snapshot coverage | SPEC.md + implementation (never the implementer's conversation) | verification report, *proposed* fixtures (human promotes them) | modify implementation |
 | `security-reviewer` | Boundary audit: validation completeness, PII in logs, injection surfaces, dependency risk | whole repo | report | modify code |
 | (built-in) Explore/Plan subagents | Research and planning legwork to keep the main context clean | repo | — | — |
 

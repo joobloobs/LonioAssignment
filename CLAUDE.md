@@ -72,3 +72,30 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # Context
 
 For information about guideline and requirements of the project, inspect `guideline.md` file.
+
+---
+
+# Project Map & Invariants
+
+Architecture docs and ADRs live in `docs/` — read `docs/architecture-overview.md`
+before proposing structural changes; do not re-litigate accepted ADRs.
+
+| Path | What / rules |
+|---|---|
+| `packages/engine-core` | Canton-agnostic flow interpreter + `evaluate` pipeline. Pure — no I/O, no UI, no env (lint-enforced). Knows nothing about any canton. |
+| `packages/canton-zh` | Zurich module. `SPEC.md` is the normative contract; see its `CLAUDE.md` for read-only rules on spec/fixtures. |
+| `apps/web` | Next.js app: form renderer, REST API, dashboard, SQLite (Drizzle). The only place with I/O. |
+| `extraction_reference/` | Frozen vendor evidence + `CAPTURE.json` drift baseline. Never imported by app code; executed only by the differential test harness. |
+| `.claude/agents`, `.claude/commands` | Canton pipeline: `/add-canton`, `/update-canton`, `/canton-drift`, `/behavior-diff`, … Entry points orchestrate subagents with two human gates (spec approval, behavioral-diff review). |
+
+Invariants that must survive any change:
+
+1. Adding a canton touches a new `packages/canton-*` plus ONE registry line in
+   `apps/web/src/cantons.ts` — nothing else.
+2. The server recomputes tariffs from raw answers; client results are preview only.
+3. Behavior changes must show up in the regenerated behavioral snapshot
+   (`pnpm snapshot`) and be reviewed as a diff; `engineVersion` bumps with them.
+4. Stored `answers` are immutable; derived columns change only via explicit
+   recompute, never silently.
+5. Verification gate: `pnpm lint && pnpm typecheck && pnpm test` (includes the
+   vendor differential run) before claiming anything works.

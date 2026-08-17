@@ -1,0 +1,79 @@
+[
+  {
+    "name": "vendor-example-1-single-parent-three-counting-children",
+    "source": "extraction_reference/main.formatted.js:14437-14490 (vendor examples array)",
+    "answers": {
+      "mainIncome": true,
+      "civilStatusMarriedOrRegisteredRelationship": false,
+      "recognizedReligiousAffiliation": false,
+      "withChildren": true,
+      "children": [
+        {
+          "group": "UNDERAGE",
+          "childInSameHousehold": true,
+          "sharedCustody": true,
+          "sameHousehold": true,
+          "mainFinancialContributor": true
+        },
+        {
+          "group": "UNDERAGE",
+          "childInSameHousehold": false,
+          "parentalCare": true,
+          "alternatingCustody": true,
+          "mainFinancialContributor": true
+        },
+        {
+          "group": "IN_FIRST_APPRENTICESHIP",
+          "childInSameHousehold": false,
+          "financiallySupported": true
+        },
+        { "group": "OTHER" }
+      ],
+      "centerOfLife": { "residenceInSwitzerland": true }
+    },
+    "expected": { "kind": "code", "code": "H3N" }
+  },
+  {
+    "name": "vendor-example-2-cross-border-commuter-germany",
+    "source": "extraction_reference/main.formatted.js:14491-14565 (vendor examples array)",
+    "answers": {
+      "mainIncome": true,
+      "civilStatusMarriedOrRegisteredRelationship": false,
+      "recognizedReligiousAffiliation": false,
+      "withChildren": true,
+      "children": [
+        {
+          "group": "UNDERAGE",
+          "childInSameHousehold": true,
+          "sharedCustody": true,
+          "sameHousehold": true,
+          "mainFinancialContributor": true
+        },
+        {
+          "group": "UNDERAGE",
+          "childInSameHousehold": false,
+          "parentalCare": true,
+          "alternatingCustody": true,
+          "mainFinancialContributor": true
+        },
+        {
+          "group": "IN_FIRST_APPRENTICESHIP",
+          "childInSameHousehold": false,
+          "financiallySupported": true
+        },
+        { "group": "OTHER" },
+        { "group": "OTHER" },
+        { "group": "OTHER" },
+        { "group": "OTHER" }
+      ],
+      "centerOfLife": {
+        "residenceInSwitzerland": false,
+        "countryOfResidence": "GERMANY",
+        "dailyReturnToGermany": false,
+        "dailyReturnToCountryOfResidenceReasonable": true,
+        "gre3": false
+      }
+    },
+    "expected": { "kind": "code", "code": "P3N" }
+  }
+]

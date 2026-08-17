@@ -1,0 +1,314 @@
+[
+  {
+    "name": "married-partner-employed-no-children",
+    "spec": "SPEC §5 letter C",
+    "answers": {
+      "mainIncome": true,
+      "civilStatusMarriedOrRegisteredRelationship": true,
+      "recognizedReligiousAffiliation": true,
+      "partnerEmployed": true,
+      "withChildren": false,
+      "centerOfLife": { "residenceInSwitzerland": true }
+    },
+    "expected": { "kind": "code", "code": "C0Y" }
+  },
+  {
+    "name": "married-partner-not-employed-no-children",
+    "spec": "SPEC §5 letter B",
+    "answers": {
+      "mainIncome": true,
+      "civilStatusMarriedOrRegisteredRelationship": true,
+      "recognizedReligiousAffiliation": false,
+      "partnerEmployed": false,
+      "withChildren": false,
+      "centerOfLife": { "residenceInSwitzerland": true }
+    },
+    "expected": { "kind": "code", "code": "B0N" }
+  },
+  {
+    "name": "single-no-children",
+    "spec": "SPEC §5 letter A",
+    "answers": {
+      "mainIncome": true,
+      "civilStatusMarriedOrRegisteredRelationship": false,
+      "recognizedReligiousAffiliation": true,
+      "withChildren": false,
+      "centerOfLife": { "residenceInSwitzerland": true }
+    },
+    "expected": { "kind": "code", "code": "A0Y" }
+  },
+  {
+    "name": "cross-border-germany-with-certificate",
+    "spec": "SPEC §4 DE daily return + §5 remap C→N",
+    "answers": {
+      "mainIncome": true,
+      "civilStatusMarriedOrRegisteredRelationship": true,
+      "recognizedReligiousAffiliation": true,
+      "partnerEmployed": true,
+      "withChildren": false,
+      "centerOfLife": {
+        "residenceInSwitzerland": false,
+        "countryOfResidence": "GERMANY",
+        "dailyReturnToGermany": true,
+        "gre1_gre2": true
+      }
+    },
+    "expected": { "kind": "code", "code": "N0Y" }
+  },
+  {
+    "name": "germany-daily-return-without-certificate",
+    "spec": "SPEC §4 — no certificate ⇒ not a cross-border commuter",
+    "answers": {
+      "mainIncome": true,
+      "civilStatusMarriedOrRegisteredRelationship": true,
+      "recognizedReligiousAffiliation": true,
+      "partnerEmployed": true,
+      "withChildren": false,
+      "centerOfLife": {
+        "residenceInSwitzerland": false,
+        "countryOfResidence": "GERMANY",
+        "dailyReturnToGermany": true,
+        "gre1_gre2": false
+      }
+    },
+    "expected": { "kind": "code", "code": "C0Y" }
+  },
+  {
+    "name": "germany-no-daily-return-not-reasonable",
+    "spec": "SPEC §4 row DE ∧ ¬dailyReturn ∧ ¬reasonable",
+    "answers": {
+      "mainIncome": true,
+      "civilStatusMarriedOrRegisteredRelationship": false,
+      "recognizedReligiousAffiliation": false,
+      "withChildren": false,
+      "centerOfLife": {
+        "residenceInSwitzerland": false,
+        "countryOfResidence": "GERMANY",
+        "dailyReturnToGermany": false,
+        "dailyReturnToCountryOfResidenceReasonable": false
+      }
+    },
+    "expected": { "kind": "code", "code": "A0N" }
+  },
+  {
+    "name": "germany-gre3-provided-negates-cross-border",
+    "spec": "SPEC §4 — boarderCrosser = NOT gre3",
+    "answers": {
+      "mainIncome": true,
+      "civilStatusMarriedOrRegisteredRelationship": false,
+      "recognizedReligiousAffiliation": false,
+      "withChildren": false,
+      "centerOfLife": {
+        "residenceInSwitzerland": false,
+        "countryOfResidence": "GERMANY",
+        "dailyReturnToGermany": false,
+        "dailyReturnToCountryOfResidenceReasonable": true,
+        "gre3": true
+      }
+    },
+    "expected": { "kind": "code", "code": "A0N" }
+  },
+  {
+    "name": "liechtenstein-daily-return-no-liability",
+    "spec": "SPEC §4 LI override — outcome is prose, not a code",
+    "answers": {
+      "mainIncome": true,
+      "civilStatusMarriedOrRegisteredRelationship": true,
+      "recognizedReligiousAffiliation": true,
+      "partnerEmployed": true,
+      "withChildren": false,
+      "centerOfLife": {
+        "residenceInSwitzerland": false,
+        "countryOfResidence": "LIECHTENSTEIN",
+        "dailyReturnToLiechtenstein": true
+      }
+    },
+    "expected": {
+      "kind": "noLiability",
+      "text": "Grundsätzlich keine Quellensteuerpflicht",
+      "remark": "Unter Vorbehalt des Doppelbesteuerungsabkommens"
+    }
+  },
+  {
+    "name": "liechtenstein-45-nonreturn-days-code-with-remark",
+    "spec": "SPEC §4 LI ∧ ¬dailyReturn ∧ >45 days — code stands, DTA remark attached",
+    "answers": {
+      "mainIncome": true,
+      "civilStatusMarriedOrRegisteredRelationship": false,
+      "recognizedReligiousAffiliation": false,
+      "withChildren": false,
+      "centerOfLife": {
+        "residenceInSwitzerland": false,
+        "countryOfResidence": "LIECHTENSTEIN",
+        "dailyReturnToLiechtenstein": false,
+        "moreThanFortyFiveNonReturnDays": true
+      }
+    },
+    "expected": {
+      "kind": "code",
+      "code": "A0N",
+      "remark": "Unter Vorbehalt des Doppelbesteuerungsabkommens"
+    }
+  },
+  {
+    "name": "liechtenstein-under-45-days-no-liability",
+    "spec": "SPEC §4 LI ∧ ¬dailyReturn ∧ ≤45 days",
+    "answers": {
+      "mainIncome": true,
+      "civilStatusMarriedOrRegisteredRelationship": false,
+      "recognizedReligiousAffiliation": false,
+      "withChildren": false,
+      "centerOfLife": {
+        "residenceInSwitzerland": false,
+        "countryOfResidence": "LIECHTENSTEIN",
+        "dailyReturnToLiechtenstein": false,
+        "moreThanFortyFiveNonReturnDays": false
+      }
+    },
+    "expected": {
+      "kind": "noLiability",
+      "text": "Grundsätzlich keine Quellensteuerpflicht",
+      "remark": "Unter Vorbehalt des Doppelbesteuerungsabkommens"
+    }
+  },
+  {
+    "name": "replacement-income-domestic",
+    "spec": "SPEC §5 replacement income — bare letter G",
+    "answers": {
+      "mainIncome": false,
+      "centerOfLife": { "residenceInSwitzerland": true }
+    },
+    "expected": { "kind": "code", "code": "G" }
+  },
+  {
+    "name": "replacement-income-cross-border",
+    "spec": "SPEC §5 replacement income — bare letter Q",
+    "answers": {
+      "mainIncome": false,
+      "centerOfLife": {
+        "residenceInSwitzerland": false,
+        "countryOfResidence": "GERMANY",
+        "dailyReturnToGermany": true,
+        "gre1_gre2": true
+      }
+    },
+    "expected": { "kind": "code", "code": "Q" }
+  },
+  {
+    "name": "replacement-income-liechtenstein-override",
+    "spec": "SPEC §4+§5 — LI override beats the replacement letter",
+    "answers": {
+      "mainIncome": false,
+      "centerOfLife": {
+        "residenceInSwitzerland": false,
+        "countryOfResidence": "LIECHTENSTEIN",
+        "dailyReturnToLiechtenstein": true
+      }
+    },
+    "expected": {
+      "kind": "noLiability",
+      "text": "Grundsätzlich keine Quellensteuerpflicht",
+      "remark": "Unter Vorbehalt des Doppelbesteuerungsabkommens"
+    }
+  },
+  {
+    "name": "married-cross-border-one-child-remap-b-to-m",
+    "spec": "SPEC §3.1 row M5 + §5 remap B→M",
+    "answers": {
+      "mainIncome": true,
+      "civilStatusMarriedOrRegisteredRelationship": true,
+      "recognizedReligiousAffiliation": false,
+      "partnerEmployed": false,
+      "withChildren": true,
+      "children": [
+        { "group": "UNDERAGE", "childInSameHousehold": true, "sharedCustody": false }
+      ],
+      "centerOfLife": {
+        "residenceInSwitzerland": false,
+        "countryOfResidence": "GERMANY",
+        "dailyReturnToGermany": true,
+        "gre1_gre2": true
+      }
+    },
+    "expected": { "kind": "code", "code": "M1N" }
+  },
+  {
+    "name": "unmarried-child-other-group-does-not-count",
+    "spec": "SPEC §3.2 row U17",
+    "answers": {
+      "mainIncome": true,
+      "civilStatusMarriedOrRegisteredRelationship": false,
+      "recognizedReligiousAffiliation": false,
+      "withChildren": true,
+      "children": [{ "group": "OTHER" }],
+      "centerOfLife": { "residenceInSwitzerland": true }
+    },
+    "expected": { "kind": "code", "code": "A0N" }
+  },
+  {
+    "name": "unmarried-u15-counts-but-does-not-justify",
+    "spec": "SPEC §3.2 row U15 — digit 1, letter stays A",
+    "answers": {
+      "mainIncome": true,
+      "civilStatusMarriedOrRegisteredRelationship": false,
+      "recognizedReligiousAffiliation": false,
+      "withChildren": true,
+      "children": [
+        {
+          "group": "IN_FIRST_APPRENTICESHIP",
+          "childInSameHousehold": false,
+          "financiallySupported": true
+        }
+      ],
+      "centerOfLife": { "residenceInSwitzerland": true }
+    },
+    "expected": { "kind": "code", "code": "A1N" }
+  },
+  {
+    "name": "unmarried-u2-in-household-not-main-contributor",
+    "spec": "SPEC §3.2 row U2 — neither counts nor justifies",
+    "answers": {
+      "mainIncome": true,
+      "civilStatusMarriedOrRegisteredRelationship": false,
+      "recognizedReligiousAffiliation": false,
+      "withChildren": true,
+      "children": [
+        {
+          "group": "UNDERAGE",
+          "childInSameHousehold": true,
+          "sharedCustody": true,
+          "sameHousehold": true,
+          "mainFinancialContributor": false
+        }
+      ],
+      "centerOfLife": { "residenceInSwitzerland": true }
+    },
+    "expected": { "kind": "code", "code": "A0N" }
+  },
+  {
+    "name": "digit-clamps-at-nine",
+    "spec": "SPEC §5 digit = min(count, 9); eleven counting children",
+    "answers": {
+      "mainIncome": true,
+      "civilStatusMarriedOrRegisteredRelationship": true,
+      "recognizedReligiousAffiliation": false,
+      "partnerEmployed": true,
+      "withChildren": true,
+      "children": [
+        { "group": "UNDERAGE", "childInSameHousehold": true, "sharedCustody": false },
+        { "group": "UNDERAGE", "childInSameHousehold": true, "sharedCustody": false },
+        { "group": "UNDERAGE", "childInSameHousehold": true, "sharedCustody": false },
+        { "group": "UNDERAGE", "childInSameHousehold": true, "sharedCustody": false },
+        { "group": "UNDERAGE", "childInSameHousehold": true, "sharedCustody": false },
+        { "group": "UNDERAGE", "childInSameHousehold": true, "sharedCustody": false },
+        { "group": "UNDERAGE", "childInSameHousehold": true, "sharedCustody": false },
+        { "group": "UNDERAGE", "childInSameHousehold": true, "sharedCustody": false },
+        { "group": "UNDERAGE", "childInSameHousehold": true, "sharedCustody": false },
+        { "group": "UNDERAGE", "childInSameHousehold": true, "sharedCustody": false },
+        { "group": "UNDERAGE", "childInSameHousehold": true, "sharedCustody": false }
+      ],
+      "centerOfLife": { "residenceInSwitzerland": true }
+    },
+    "expected": { "kind": "code", "code": "C9N" }
+  }
+]

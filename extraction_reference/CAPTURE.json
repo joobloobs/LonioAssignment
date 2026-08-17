@@ -1,0 +1,20 @@
+{
+  "canton": "ZH",
+  "source": "https://www.services.zh.ch/app/quest/tarifbestimmung/prod/",
+  "capturedAt": "2026-08-15",
+  "files": [
+    {
+      "file": "main.js",
+      "sha256": "1dfa5eb44c8495b28085baafdc9d423f98b3c3239d948a26a14c84a6a76fac3b"
+    },
+    {
+      "file": "polyfills.js",
+      "sha256": "7c73df0ab142b3a9be398ae9146021bbdd78b5c4d507d734723aeb88acbd9274"
+    },
+    {
+      "file": "runtime.js",
+      "sha256": "53229c6dfcdf1da545936bd7ccc6f0b0d15121c6d91e12fe794bfcdd8504b018"
+    }
+  ],
+  "note": "Baseline for /canton-drift. capturedAt reflects when hashes were recorded in this repo; the bundle itself was scraped from the production app. Formatted copies (*.formatted.js) are derived locally and not part of the drift check."
+}

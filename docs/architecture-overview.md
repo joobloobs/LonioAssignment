@@ -102,11 +102,17 @@ touches I/O.
 │  ├─ commands|skills/          # /extract-canton, /implement-canton, /update-canton, ...
 │  └─ settings.json             # permission guardrails
 ├─ apps/
-│  └─ web/                      # the Next.js app
-│     ├─ src/app/               #   UI routes: onboarding, dashboard
-│     ├─ src/app/api/           #   REST route handlers (the Node backend)
-│     ├─ src/components/        #   flow renderer + question-kind components
-│     └─ src/server/            #   server-only: repositories, services, db schema
+│  └─ web/                      # ← workspace PACKAGE: own package.json, the deployable
+│     ├─ package.json           #   manifest + scripts (pnpm sees this; it's a graph node)
+│     ├─ next.config.ts         #   config files belong at the package root ...
+│     ├─ drizzle.config.ts      #   ... which is why source is pushed down into src/
+│     └─ src/                   # ← just a FOLDER: all source code of this one package
+│        ├─ app/                #     Next.js App Router (framework-reserved name)
+│        │  ├─ onboarding/      #       employee form route
+│        │  ├─ dashboard/       #       HR dashboard route
+│        │  └─ api/             #       REST route handlers — the Node backend
+│        ├─ components/         #     flow renderer + question-kind components
+│        └─ server/             #     server-only: repositories, services, db schema
 └─ packages/
    ├─ engine-core/              # interface, condition AST, reachability, evaluate, enumerator
    └─ canton-zh/

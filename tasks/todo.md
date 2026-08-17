@@ -47,12 +47,38 @@ Open items deliberately deferred to Phase 2 (implementation): condition-AST fina
 shape, exact snapshot file format, whether the vendor-bundle differential shim is
 practical (graceful degradation documented if not).
 
-## Phase 2 (next, after user review of the docs)
+## Phase 2 — implementation (done)
 
-- [ ] Scaffold monorepo (pnpm workspaces, strict tsconfig, apps/web, packages)
-- [ ] Write `.claude/agents/` + commands from the workflow doc
-- [ ] `/extract-canton` output → `packages/canton-zh/SPEC.md` from existing notes (human gate 1)
-- [ ] Implement engine-core (condition AST, reachability, evaluate, enumerator)
-- [ ] Implement canton-zh from SPEC + fixtures
-- [ ] App: flow renderer, API, dashboard, DB
-- [ ] Oracle stack: fixtures, snapshot, differential harness
+- [x] Scaffold monorepo (pnpm workspaces, strict tsconfig, apps/web, packages, purity lint)
+- [x] Write `.claude/agents/` (extractor, implementer, verifier, security) + commands
+      (`/add-canton`, `/update-canton`, `/extract-canton`, `/implement-canton`,
+      `/verify-canton`, `/canton-drift`, `/behavior-diff`) + settings deny-list
+- [x] `packages/canton-zh/SPEC.md` from extraction evidence (line-referenced, decision
+      tables M1–M15 / U1–U17, visibility tables, deviations) — **needs user approval (gate 1)**
+- [x] engine-core: condition AST, lexical-scope reachability, restrictToReachable
+      (fixpoint), evaluate pipeline, exhaustive enumerator, registry — 14 tests
+- [x] canton-zh: flow, compute (row-referenced), schema, module — 29 tests
+- [x] Oracle stack: vendor examples + curated fixtures (18), behavioral snapshot
+      (8,870 cases, committed), **differential harness executing the vendor bundle —
+      full agreement on all 8,870 combinations**, property tests, consistency proxy test
+- [x] apps/web: generic FlowRenderer, OnboardingForm (live preview, stale pruning),
+      REST API (8 tests incl. stale/forged-result rejection), dashboard, SQLite/Drizzle
+- [x] CI workflow (lint → typecheck → test → build); CAPTURE.json drift baseline
+- [x] Verified: lint ✓, typecheck ✓ (3 workspaces), 51 tests ✓, production build ✓,
+      manual smoke test ✓ (CH → no assessment; DE cross-border → P1Y on dashboard)
+
+### Phase 2 review — deliberate scope cuts (documented, not oversights)
+
+- No Playwright e2e and no component tests for the renderer yet (engine laws +
+  API tests carry correctness; e2e is the next increment per testing-strategy).
+- Employee detail page: API endpoint exists, no UI screen.
+- DDL bootstrap instead of drizzle-kit migration files (documented in db docs).
+- Snapshot file is ~5 MB in-repo (accepted in ADR; canonical ordering keeps diffs small).
+- Nothing committed to git yet — repo state left for user review.
+
+## Phase 3 (candidates, user to prioritize)
+
+- [ ] Playwright e2e for the demo journeys; renderer component tests
+- [ ] README final sections (process narrative for the deliverable)
+- [ ] Video outlines (architecture/changeability + product demo)
+- [ ] First commit / repo hygiene

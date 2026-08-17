@@ -1,0 +1,24 @@
+{
+  "name": "@lonio-poc/canton-zh",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "snapshot": "tsx scripts/generate-snapshot.ts"
+  },
+  "dependencies": {
+    "@lonio-poc/engine-core": "workspace:*",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "fast-check": "^4.1.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.0"
+  }
+}
