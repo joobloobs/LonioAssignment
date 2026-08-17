@@ -76,6 +76,20 @@ practical (graceful degradation documented if not).
 - Snapshot file is ~5 MB in-repo (accepted in ADR; canonical ordering keeps diffs small).
 - Nothing committed to git yet — repo state left for user review.
 
+## Post-Phase-2 refactors
+
+- [x] **`extraction_reference/` → `packages/canton-zh/extraction/`**. At the root it
+      was a second, parallel canton registry: adding Bern would have meant keeping
+      `extraction_reference/be/` in sync with `packages/canton-be/` by hand, breaking
+      the "everything about a canton lives in one folder" invariant. (Earlier entries
+      in this file predate the move and still use the old path — kept as written.)
+- [x] **Stage 0 / Gate 0 added to the canton pipeline**: establish the *source of
+      truth* before extracting. The developer supplies the calculator or delegates
+      the search; `canton-extractor` gains a recon mode that classifies the source
+      into four oracle tiers and writes `RECON.md` without extracting. Oracle
+      strength is a property of the source, so it is now surfaced and carried
+      through to gate 2 instead of being assumed uniform.
+
 ## Phase 3 (candidates, user to prioritize)
 
 - [ ] Playwright e2e for the demo journeys; renderer component tests

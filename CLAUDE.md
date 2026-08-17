@@ -85,7 +85,7 @@ before proposing structural changes; do not re-litigate accepted ADRs.
 | `packages/engine-core` | Canton-agnostic flow interpreter + `evaluate` pipeline. Pure — no I/O, no UI, no env (lint-enforced). Knows nothing about any canton. |
 | `packages/canton-zh` | Zurich module. `SPEC.md` is the normative contract; see its `CLAUDE.md` for read-only rules on spec/fixtures. |
 | `apps/web` | Next.js app: form renderer, REST API, dashboard, SQLite (Drizzle). The only place with I/O. |
-| `extraction_reference/` | Frozen vendor evidence + `CAPTURE.json` drift baseline. Never imported by app code; executed only by the differential test harness. |
+| `packages/canton-*/extraction/` | Frozen vendor evidence + `CAPTURE.json` drift baseline, per canton. Never imported by app code; executed only by that canton's differential test harness. |
 | `.claude/agents`, `.claude/commands` | Canton pipeline: `/add-canton`, `/update-canton`, `/canton-drift`, `/behavior-diff`, … Entry points orchestrate subagents with two human gates (spec approval, behavioral-diff review). |
 
 Invariants that must survive any change:

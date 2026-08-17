@@ -5,9 +5,8 @@ argument-hint: "<canton-id>"
 
 Drift check for canton: $ARGUMENTS
 
-1. Read the capture manifest — `extraction_reference/CAPTURE.json` for ZH (or
-   `extraction_reference/<canton>/CAPTURE.json`). It lists the source URL and
-   the SHA-256 of each captured file.
+1. Read the capture manifest — `packages/canton-<id>/extraction/CAPTURE.json`.
+   It lists the source URL and the SHA-256 of each captured file.
 2. Fetch each listed file from the live URL (WebFetch or `curl -s`), hash it
    (`sha256sum`), and compare against the manifest.
 3. Report per file: `unchanged` or `CHANGED (old → new hash)`.

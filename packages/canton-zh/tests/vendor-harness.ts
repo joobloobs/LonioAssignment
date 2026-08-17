@@ -2,14 +2,14 @@
  * Executes the *vendor's own* decision services (`_l`, `El`, `Zl`) extracted
  * from the captured Zurich bundle, offline and outside the app runtime, as a
  * differential-testing oracle (SPEC §8). Line ranges are pinned to the frozen
- * artifact `extraction_reference/main.formatted.js` — see EXTRACTION-NOTES.md.
+ * artifact `extraction/main.formatted.js` — see EXTRACTION-NOTES.md.
  */
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import type { ZhAnswers } from "../src/index";
 
 const bundlePath = fileURLToPath(
-  new URL("../../../extraction_reference/main.formatted.js", import.meta.url),
+  new URL("../extraction/main.formatted.js", import.meta.url),
 );
 
 interface VendorRate {

@@ -31,7 +31,7 @@ Companion documents: [database-design](database-design.md) ·
 
 ## Requirements shaping the design
 
-From `guideline.md` and the domain extraction (`extraction_reference/EXTRACTION-NOTES.md`):
+From `guideline.md` and the domain extraction (`packages/canton-zh/extraction/EXTRACTION-NOTES.md`):
 
 1. One tariff function used by **both** the onboarding form and the HR dashboard →
    the engine must be pure and isomorphic (browser + Node).
@@ -96,7 +96,6 @@ touches I/O.
 ├─ README.md                    # (deliverable) approach, AI workflow, trade-offs
 ├─ docs/                        # this document, ADRs, design docs
 ├─ tasks/                       # todo.md, lessons.md (agent self-improvement loop)
-├─ extraction_reference/        # raw ZH reverse-engineering evidence (input, never imported)
 ├─ .claude/
 │  ├─ agents/                   # extractor, implementer, verifier, security-reviewer
 │  ├─ commands|skills/          # /extract-canton, /implement-canton, /update-canton, ...
@@ -115,9 +114,10 @@ touches I/O.
 │        └─ server/             #     server-only: repositories, services, db schema
 └─ packages/
    ├─ engine-core/              # interface, condition AST, reachability, evaluate, enumerator
-   └─ canton-zh/
+   └─ canton-zh/                # everything about one canton, in one folder
       ├─ CLAUDE.md              # canton-local agent context
       ├─ SPEC.md                # normative rule spec (human-approved contract)
+      ├─ extraction/            # raw reverse-engineering evidence + CAPTURE.json
       ├─ fixtures/              # vendor examples + curated golden cases
       └─ src/                   # flow.ts, compute.ts, schema.ts, index.ts
 ```
@@ -271,7 +271,7 @@ historical result silently changing on page load would be a bug, not freshness.
 ## The Zurich flow, compressed
 
 Full normative detail belongs to `packages/canton-zh/SPEC.md` (built from
-`extraction_reference/EXTRACTION-NOTES.md`); this sketch shows the shape the generic
+`packages/canton-zh/extraction/EXTRACTION-NOTES.md`); this sketch shows the shape the generic
 renderer must handle:
 
 ```mermaid

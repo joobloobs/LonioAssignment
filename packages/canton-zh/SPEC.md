@@ -4,7 +4,7 @@
 |---|---|
 | Spec version | **1.0.0** (engineVersion `zh-1.0.0`) |
 | Source | `https://www.services.zh.ch/app/quest/tarifbestimmung/prod/` |
-| Evidence | `extraction_reference/main.formatted.js` (+ `EXTRACTION-NOTES.md`), line references below |
+| Evidence | `extraction/main.formatted.js` (+ `extraction/EXTRACTION-NOTES.md`), line references below |
 | Status | Normative — implementation and fixtures are tested against this document |
 
 This document is the contract. The flow definition (`src/flow.ts`), the compute

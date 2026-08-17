@@ -1,8 +1,9 @@
 # canton-zh — agent context
 
 This package is the Canton Zurich tariff module. Read `SPEC.md` first — it is the
-normative contract; the raw evidence behind it lives in
-`../../extraction_reference/` (line-referenced).
+normative contract; the raw evidence behind it lives in `extraction/`
+(line-referenced). Everything about this canton — spec, evidence, implementation,
+fixtures, oracle — is inside this package; deleting the package deletes the canton.
 
 Rules for working here:
 

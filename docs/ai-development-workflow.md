@@ -58,7 +58,7 @@ packages/engine-core/CLAUDE.md     # core invariants: condition AST scope, evalu
 packages/canton-xx/CLAUDE.md       # canton-local: where SPEC/fixtures live, what is read-only
 packages/canton-xx/SPEC.md         # the normative contract for this canton (versioned)
 packages/canton-xx/fixtures/       # golden cases with provenance (vendor / live-site / curated)
-extraction_reference/              # raw evidence with line-referenced notes (ZH today)
+packages/canton-xx/extraction/     # raw evidence with line-referenced notes + CAPTURE.json
 tasks/lessons.md                   # correction patterns fed back into agent behavior
 ```
 
@@ -70,7 +70,7 @@ detector, the spec, and the snapshot diff tooling already exist and compose.
 
 | Agent (`.claude/agents/`) | Role | Reads | Writes | May not |
 |---|---|---|---|---|
-| `canton-extractor` | Reverse-engineer a calculator (bundle or site) into evidence + draft spec | source bundles, live site (read-only fetch) | `extraction_reference/<canton>/`, draft `SPEC.md`, vendor fixtures | touch any app/package code |
+| `canton-extractor` | Classify the source (recon), then reverse-engineer a calculator into evidence + draft spec | source bundles, live site (read-only fetch), web search | `packages/canton-<id>/extraction/`, draft `SPEC.md`, vendor fixtures | touch any package's `src/` |
 | `canton-implementer` | Turn an approved spec into flow + compute + schema + tests; iterate to green | SPEC.md, fixtures, engine-core docs | `packages/canton-xx/src/`, tests | edit SPEC.md, fixtures, engine-core, other packages |
 | `canton-verifier` | Adversarial audit with fresh context: re-read spec, hunt uncovered branches, propose extra edge fixtures, check snapshot coverage | SPEC.md + implementation (never the implementer's conversation) | verification report, *proposed* fixtures (human promotes them) | modify implementation |
 | `security-reviewer` | Boundary audit: validation completeness, PII in logs, injection surfaces, dependency risk | whole repo | report | modify code |
@@ -93,6 +93,11 @@ Repeatable procedures are slash commands, not re-invented prompts:
 
 ### A. Add a new canton (the scale-out story)
 
+0. **Recon** → establish the *source of truth* before anything else. The developer
+   either supplies the calculator or delegates the search to the extractor, which
+   classifies the source and writes `RECON.md` without extracting.
+   **Human gate 0** — confirm the source and accept the oracle strength it implies
+   (see below). Nothing downstream is worth more than the oracle it rests on.
 1. `/extract-canton` → evidence + draft spec, fixtures with provenance.
 2. **Human gate 1** — approve SPEC.md. This is where domain judgment lives; nothing
    downstream can compensate for a wrong spec.
@@ -103,6 +108,24 @@ Repeatable procedures are slash commands, not re-invented prompts:
    canton touches nothing shared" property mechanically.
 
 Cantons parallelize: N cantons = N independent pipelines with no shared files.
+
+**Oracle strength is a property of the source, not of our code.** Zurich is the
+best case — the logic ships in the client bundle, so it can be executed as a
+differential oracle over the exhaustive enumeration. Other cantons will be worse,
+and the pipeline's job is to make that *visible* rather than uniform:
+
+| Tier | Source | Oracle | Coverage |
+|---|---|---|---|
+| 1 | logic in the client JS bundle (ZH) | execute their functions offline | exhaustive |
+| 2 | server API called per answer | record a corpus once, replay offline in CI | stratified sample |
+| 3 | server-rendered postback | browser-automation capture, once | stratified sample |
+| 4 | no calculator — PDFs/ordinances only | official worked examples, curated | curated only; needs domain review |
+
+Two invariants hold across all four: the oracle interface is unchanged (*"given an
+answer document, what does the authority say?"*), and CI always runs against a
+**frozen, committed corpus** — never against a live government server. Only the
+capture mechanism differs. Tiers 2–4 must carry their reduced coverage through to
+gate 2 so it is reviewed, not discovered later.
 
 ### B. The source website changes (the maintenance story)
 

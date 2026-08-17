@@ -7,7 +7,7 @@ export default tseslint.config(
       "**/.next/**",
       "**/dist/**",
       "**/coverage/**",
-      "extraction_reference/**",
+      "packages/*/extraction/**",
       "**/*.mjs",
       "**/*.js",
       "**/next-env.d.ts",
