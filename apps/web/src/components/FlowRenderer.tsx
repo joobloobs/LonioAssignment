@@ -10,10 +10,14 @@ import type {
 import { isNodeVisible, parsePath, setAtPath } from "@lonio-poc/engine-core";
 
 /**
- * Canton-agnostic form renderer: interprets any QuestionFlow. Visibility is
- * evaluated against the raw local answers (vendor-faithful — temporarily hidden
- * answers are kept and reappear); the *effective* document sent to the engine
- * is derived by the parent via restrictToReachable.
+ * Canton-agnostic form renderer: interprets any QuestionFlow.
+ *
+ * `value` must already be reachability-restricted (the parent re-applies
+ * `restrictToReachable` on every edit). isNodeVisible only checks a node's own
+ * condition, so an unrestricted document renders *orphans* — questions whose
+ * condition still passes because the answer it names is itself no longer
+ * reachable. Feeding this component the same fixpoint document the engine sees
+ * makes that state unrepresentable.
  */
 export interface FlowRendererProps {
   flow: QuestionFlow;

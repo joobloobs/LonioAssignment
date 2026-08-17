@@ -15,7 +15,7 @@ export function OnboardingForm() {
   const [lastName, setLastName] = useState("");
   const [nationality, setNationality] = useState("");
   const [canton, setCanton] = useState("ZH");
-  const [rawAnswers, setRawAnswers] = useState<AnswersDoc>({});
+  const [answers, setAnswers] = useState<AnswersDoc>({});
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState<string | undefined>(undefined);
   const [submittedId, setSubmittedId] = useState<string | undefined>(undefined);
@@ -23,15 +23,16 @@ export function OnboardingForm() {
   const module_ = cantonRegistry.get(canton);
   const needsQuestionnaire = nationality !== "" && nationality !== SWISS_NATIONALITY;
 
-  // The raw local answers keep temporarily-hidden values (vendor-faithful UX);
-  // the engine only ever sees the reachable subset.
-  const effectiveAnswers = useMemo(
-    () => (module_ && needsQuestionnaire ? restrictToReachable(module_.flow, rawAnswers) : {}),
-    [module_, needsQuestionnaire, rawAnswers],
-  );
+  // Single source of truth: the form state is *always* the reachable subset.
+  // Every edit is re-restricted to a fixpoint, so answers orphaned by a changed
+  // upstream answer are dropped immediately — the renderer and the engine can
+  // never disagree about which questions exist.
+  const setAnswersRestricted = (next: AnswersDoc) =>
+    setAnswers(module_ ? restrictToReachable(module_.flow, next) : next);
+
   const evaluation = useMemo(
-    () => (module_ && needsQuestionnaire ? evaluate(module_, effectiveAnswers) : undefined),
-    [module_, needsQuestionnaire, effectiveAnswers],
+    () => (module_ && needsQuestionnaire ? evaluate(module_, answers) : undefined),
+    [module_, needsQuestionnaire, answers],
   );
 
   const personalValid = firstName.trim() !== "" && lastName.trim() !== "" && nationality !== "";
@@ -54,7 +55,7 @@ export function OnboardingForm() {
           lastName: lastName.trim(),
           nationality,
           canton,
-          ...(needsQuestionnaire ? { answers: effectiveAnswers } : {}),
+          ...(needsQuestionnaire ? { answers } : {}),
         }),
       });
       if (res.status === 201) {
@@ -81,7 +82,7 @@ export function OnboardingForm() {
     setFirstName("");
     setLastName("");
     setNationality("");
-    setRawAnswers({});
+    setAnswers({});
     setSubmittedId(undefined);
     setServerError(undefined);
   }
@@ -155,7 +156,7 @@ export function OnboardingForm() {
       {needsQuestionnaire && module_ && (
         <div className="card">
           <h2>Source tax questionnaire — {module_.cantonLabel}</h2>
-          <FlowRenderer flow={module_.flow} value={rawAnswers} onChange={setRawAnswers} />
+          <FlowRenderer flow={module_.flow} value={answers} onChange={setAnswersRestricted} />
           {evaluation && <OutcomePanel evaluation={evaluation} />}
         </div>
       )}

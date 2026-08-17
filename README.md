@@ -74,6 +74,13 @@ a less efficient model that might introduce more hallucinations or bugs.
 I reused a claude.md file that I designed for other projects and adapted it a bit,
 the important part inside it is the workflow orchestration.
 
+For small bug fixes, I used lighter effort to mitigate them : for example, the design was keeping 
+the stale answers in the UI, this was for UX : if the user comes back all the way up and changes one 
+answer, they don't have to answer everything again. I decided to remove all the stale answer from the 
+design as it would be error prone and displayed unrelevant answers even though backend handled it well.
+This could have been mitigated but decided to go on the easier path of simplifying things with a small
+UX tradeoff.
+
 Maintainability is dispatched by codified slash commands, not re-invented prompts, 
 ([`.claude/commands/`](.claude/commands)). A developer types one entry point
 (`/add-canton`, `/update-canton`) and the rest is semi automatic (the dev is asked what they prefer),
@@ -123,6 +130,7 @@ recomputed server side.
 | Enumeration bounded at 2 children | a 3rd child adds no new *kind* of path (digit clamps at 9) | not completely exhaustive, only up to the bound |
 | No Playwright e2e / renderer tests | engine laws + API tests carry correctness | UI regressions caught by review, not CI |
 | English labels only | labels are data in the flow; i18n touches no logic | one language today (could be changed) |
+| UI doesn't remember answers that are unreachable | it is bug prone to have 2 different versions of the answers | UX is differed but having it this way is a reasonable UX choice as well |
 
 Two things are specified but not built: the recompute pass and stored-data impact report
 ([`docs/database-design.md`](docs/database-design.md), driven by `/update-canton`), so a
